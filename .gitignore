@@ -1,3 +1,9 @@
 
 # Java class files
 *.class
+
+# tj.exe test files
+*/testi
+
+# tj.exe results
+*/rezultati

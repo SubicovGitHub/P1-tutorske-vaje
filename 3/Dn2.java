@@ -10,7 +10,7 @@ public class Dn2 {
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        int b = sc.nextInt();
+        int b = sc.nextInt();   // ne rabimo, samo za avtomatsko testiranje
         int d = sc.nextInt();
         int dolzinaTipkanja = sc.nextInt();
 
@@ -23,50 +23,57 @@ public class Dn2 {
             
             int tipka = sc.nextInt();
 
-            int an = 0;
+            int stKvadrata = 0; // a_n (indeks kvadrata)
             for (int j=0; j<d; j++) {
-                int kvadrat = (j+1)*(j+1);
-                if (tipka < kvadrat*kvadrat) {
-                    an = j;
+                int kvadrat = povrsinaKvadrata(j);
+                if (tipka < kvadrat) {
+                    stKvadrata = j;
                     break;
                 }
             }
 
-            int povrsinaKvadrata = povrsinaKvadrata(an);
-            int povrsinaNotranjegaKvadrata = povrsinaKvadrata(an-1);
+            int povrsinaKvadrata = povrsinaKvadrata(stKvadrata);
+            int povrsinaNotranjegaKvadrata = povrsinaKvadrata(stKvadrata-1);
+            // System.out.printf("kvadrat: (%d->%d)\n", stKvadrata, povrsinaKvadrata);
+            // System.out.printf("notranji: (%d->%d)\n", stKvadrata-1, povrsinaNotranjegaKvadrata);
 
-            int tipkaX = -1 * an;
-            int tipkaY = an;
+            int tipkaX = -1 * stKvadrata;
+            int tipkaY = stKvadrata;
 
             // gremo po tipkah na tem kvadratu
             int indeksTipke = 0;
+            int stranica = 1;
             for (int j=povrsinaNotranjegaKvadrata; j<povrsinaKvadrata; j++) {
                 
+                // takoj prva tipka v kvadratu
                 if (j == tipka)
                     break;
-                
+
                 // zgornja stranica
-                if (indeksTipke / (an*an) == 0) {
+                if (indeksTipke / (stKvadrata*2) == 0) {
                     tipkaX += 1;
+                    stranica = 1;
                 }
                 // desna stranica
-                else if (indeksTipke / (an*an) == 1) {
+                else if (indeksTipke / (stKvadrata*2) == 1) {
                     tipkaY -= 1;
+                    stranica = 2;
                 }
                 // spodnja stranica
-                else if (indeksTipke / (an*an) == 2) {
+                else if (indeksTipke / (stKvadrata*2) == 2) {
                     tipkaX -= 1;
+                    stranica = 3;
                 }
                 // leva stranica
-                else if (indeksTipke / (an*an) == 3) {
+                else if (indeksTipke / (stKvadrata*2) == 3) {
                     tipkaY += 1;
+                    stranica = 4;
                 }
 
                 indeksTipke++;
             }
 
-            System.out.printf("%2d -> (%d,%d), ", tipka, tipkaX, tipkaY);
-            System.out.println("");
+            // System.out.printf("%2d -> (%d,%d) (%d. stranica)\n", tipka, tipkaX, tipkaY, stranica);
 
             // če ni začetna tipka
             if (prejsnjiX != d && prejsnjiY != d) {
@@ -80,7 +87,7 @@ public class Dn2 {
         }
 
         sc.close();
-        System.out.println("-----------------");
+        // System.out.println("-----------------");
         System.out.println(skupnaPot);
 
     }
