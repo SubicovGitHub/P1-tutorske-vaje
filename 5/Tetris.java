@@ -3,22 +3,11 @@ import java.util.Scanner;
 public class Tetris {
     
     public static void izpisiTetris(int[] polje) {
-        int start = 0;
-        int konec = 0;
-        for(int i=0; i<polje.length; i++) {
-            if (polje[i] >= 1) {
-                start = i;
-                break;
+        for (int i=0; i<polje.length; i++) {
+            if (polje[i] == 0) {
+                continue;
             }
-        }
-        for(int i=polje.length-1; i>=0; i--) {
-            if (polje[i] >= 1) {
-                konec = i;
-                break;
-            }
-        }
-        for (int i=start; i<=konec; i++) {
-            System.out.println("todo");
+            System.out.printf("%d: %d\n", i-1000, polje[i]);
         }
     }
 
@@ -26,6 +15,7 @@ public class Tetris {
         Scanner sc = new Scanner(System.in);
         int n = sc.nextInt();
 
+        // {offset (kje se začne), konec}
         int[][] blok0 = {{0, 0}, {0, 0}, {0, 0}, {0, 0}};
         int[][] blok1 = {{0, 3}};
         int[][] blok2 = {{0, 1}, {0, 1}};
@@ -52,38 +42,41 @@ public class Tetris {
             blok13, blok14, blok15, blok16, blok17, blok18
         };
         
-        int[] polje = new int[2001];
+        // velikost 2005 namesto 2001, če blok spusti na skrajno desno mesto
+        int[] polje = new int[2005];
 
         for (int i=0; i<n; i++) {
             int blok = sc.nextInt();
-            int polozaj = sc.nextInt();
+            int polozaj = sc.nextInt() + 1000;
 
-            int maxVisina = 0;
-            int maxIndex = -1;
+            // na kateri višini se spuščeni blok ustavi
+            int visinaSpusta = 0;
 
-            // najdi visino postavitve
+            // najdi višino postavitve
             for (int j=0; j<bloki[blok].length; j++) {
-                int visinaElementa = bloki[blok][j][1];
                 int offsetElementa = bloki[blok][j][0];
                 int visinaPolja = polje[polozaj+j];
 
                 int kandidatVisina = visinaPolja-offsetElementa;
 
-                if (kandidatVisina > maxVisina && kandidatVisina > 0) {
-                    maxVisina = kandidatVisina;
-                    maxIndex = polozaj+j;
+                if (kandidatVisina > visinaSpusta && kandidatVisina > 0) {
+                    visinaSpusta = kandidatVisina;
                 }
             }
 
             // prištej višino na polje
             for (int j=0; j<bloki[blok].length; j++) {
-                int visinaElementa = bloki[blok][j][1];
-                int offsetElementa = bloki[blok][j][0];
+                int visinaElementa = bloki[blok][j][1] + 1;
 
-                polje[polozaj+1000] += visinaElementa+1-offsetElementa; 
+                polje[polozaj+j] = visinaSpusta + visinaElementa; 
             }
 
+            // System.out.printf("  --> %d\n", maxVisina);
+            // izpisiTetris(polje);
+            // System.out.println("-----");
         }
+        sc.close();
 
+        izpisiTetris(polje);
     }
 }
