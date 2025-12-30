@@ -8,3 +8,4 @@ Imena direktorijev se nanašajo na zaporedno številko tutorskih vaj.
 **3**: 3.11.25  
 **5**: 21.11.25  
 **7**: 5.12.25  
+**8**: 12.12.25 (naloge iz 1. roka 24/25)  
